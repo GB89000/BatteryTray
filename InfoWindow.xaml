@@ -149,7 +149,7 @@
                     <TabItem Header="About">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                             <TextBlock Text="BatteryTray" Foreground="Lime" FontSize="45" FontWeight="Bold" HorizontalAlignment="Center"/>
-                            <TextBlock Text="Version 1.0.0" Foreground="White" FontSize="20" HorizontalAlignment="Center" Margin="0,5,0,30"/>
+                            <TextBlock Text="Version 1.0.1" Foreground="White" FontSize="20" HorizontalAlignment="Center" Margin="0,5,0,30"/>
 
                             <TextBlock Text="Designed and Created" FontFamily="MV Boli" Foreground="Lime" FontSize="26" HorizontalAlignment="Center"/>
                             <TextBlock Text="by Georg Black" FontFamily="MV Boli" Foreground="Lime" FontSize="26" HorizontalAlignment="Center"/>
@@ -185,8 +185,8 @@
                                     <TextBlock Text="GitHub" VerticalAlignment="Center" Margin="8,0,0,0"/>
                                 </StackPanel>
                             </Button>
-                            
-                            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="☕ Support me on PayPal" 
+
+                            <Button Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Content="☕ Support me over Buy Me a Coffee" 
                                     Style="{StaticResource LinkButtonStyle}" Margin="5,20,5,5" Click="BtnPayPal_Click"/>
 
                             <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="📄 Documentation (PDF)" 
