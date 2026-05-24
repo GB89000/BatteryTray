@@ -1,0 +1,425 @@
+﻿<Window x:Class="WirelessBatteryMonitor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:shell="clr-namespace:System.Windows.Shell;assembly=PresentationFramework"
+        mc:Ignorable="d"
+        WindowStyle="None" 
+        AllowsTransparency="True"
+        ResizeMode="NoResize"
+        Background="Transparent"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Title="BatteryTray"
+        Left="250"
+        Top="150"
+        Width="1000"
+        Height="750"
+        Icon="Icon\battery.ico">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="StyleAndGrafics\ButtonColors.xaml"/>
+                <ResourceDictionary Source="StyleAndGrafics\ButtonStyles.xaml"/>
+                <ResourceDictionary Source="StyleAndGrafics\DataTemplateVectorForms.xaml"/>
+                <ResourceDictionary Source="StyleAndGrafics\DropDownMenu.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border CornerRadius="15" BorderThickness="3" BorderBrush="Black" Background="Black">
+        <Border CornerRadius="10" BorderThickness="5"  >
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#555555" Offset="0.0"/>
+                    <GradientStop Color="#333333" Offset="0.5"/>
+                    <GradientStop Color="#555555" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <Border.BorderBrush >
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#555555" Offset="0.0"/>
+                    <GradientStop Color="#333333" Offset="0.5"/>
+                    <GradientStop Color="#555555" Offset="1.0"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+
+            <Grid x:Name="Main_Grid">
+                <Grid.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#555555" Offset="0.0"/>
+                        <GradientStop Color="#333333" Offset="0.5"/>
+                        <GradientStop Color="#555555" Offset="1.0"/>
+                    </LinearGradientBrush>
+                </Grid.Background>
+
+
+                <!-- Defenition Zeile -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="500*"/>
+                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="5"/>
+                </Grid.RowDefinitions>
+                <!-- Defenition Spalten -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="120*"/>
+
+                    <ColumnDefinition Width="5"/>
+                </Grid.ColumnDefinitions>
+
+                <Label
+                    x:Name="ManagerForOmronFHVisionSystemSimulators"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="5,-10,100,0"
+                    FontSize="40"
+                    FontWeight="Medium"
+                    Foreground="Lime"
+                    HorizontalContentAlignment="Left"
+                    VerticalContentAlignment="Center"
+                    >
+                    BatteryTray
+                </Label>
+
+                <Grid
+                    x:Name="Grid_Close_Buttons"
+                    Grid.Row="0"
+                    Grid.Column="1">
+                    <Control x:Name="FocusDummy" Focusable="True" Width="0" Height="0" TabIndex="0"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <!--Info Button-->
+                        <Button x:Name="btnInfo" Width="30" Height="30"
+                                BorderBrush="Transparent" Background="Transparent"
+                                Click="btnInfo_Click" 
+                                Margin="0,0,5,5"
+                                Focusable="False"
+                                ToolTip="Info &amp; Support"
+                                Cursor="Hand">
+                            <TextBlock Text="i" Foreground="Lime" FontSize="22" FontWeight="Bold" 
+                                    FontFamily="Consolas" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock.Effect>
+                                    <DropShadowEffect Color="Lime" BlurRadius="8" ShadowDepth="0" Opacity="0.8"/>
+                                </TextBlock.Effect>
+                            </TextBlock>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#222222"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <!--Minimize Button-->
+                        <Button x:Name="btnMinimize" Width="30" Height="30"
+                            BorderBrush="Transparent" 
+                            Click="btnMinimize_Click" 
+                            Style="{StaticResource MyMinimiButton}"
+                            Margin="0,0,5,5"
+                            Focusable="False">
+                            <Viewbox>
+                                <Canvas Width="10" Height="100" Canvas.Left="0" Canvas.Top="0" >
+                                    <ContentControl 
+                                         ContentTemplate="{StaticResource MinimizedSymbol}" 
+                                         Canvas.Left="-35" Canvas.Top="40"
+                                     />
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                        <!--Close Button-->
+                        <Button x:Name="btnClose" Width="30" Height="30"
+                                Style="{StaticResource MyCloseButton}"
+                                Click="btnClose_Click"
+                                Margin="0,0,5,5"
+                                Focusable="False">
+                            <Viewbox>
+                                <Canvas Width="100" Height="100" Canvas.Left="0" Canvas.Top="0" >
+                                    <ContentControl 
+                                        ContentTemplate="{StaticResource CrossSymbol}" 
+                                        Canvas.Left="10" Canvas.Top="10"
+                                    />
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <Grid
+                    x:Name="Buttons_Main_Grid"
+                    Grid.Row="1"
+                    Grid.Column="1">
+                    <!-- Defenition Zeile -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="10"/>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="500*"/>
+                        <RowDefinition Height="5*"/>
+                    </Grid.RowDefinitions>
+                    <!-- Defenition Spalten -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="120*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label
+                        x:Name="GeneralSettingsLabel" 
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="5,5,5,5"
+                        FontSize="30"
+                        FontWeight="Medium"
+                        Foreground="Lime"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center">
+                        General Settings
+                    </Label>
+
+                    <!-- ========================================== -->
+                    <!-- SPALTE 1: GENERAL SETTINGS                 -->
+                    <!-- ========================================== -->
+                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="5,20,5,5">
+
+                        <!-- Autostart Checkbox -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <!-- Das Kästchen -->
+                            <CheckBox x:Name="ChkAutostart" VerticalAlignment="Bottom" Margin="0,0,8,2" Cursor="Hand">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                            <!-- Der Text -->
+                            <TextBlock Text="Autostart with Windows" Foreground="White" FontSize="20" VerticalAlignment="Bottom" />
+                        </StackPanel>
+
+                        <!-- Hidden Checkbox -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
+                            <CheckBox x:Name="ChkStartHidden" VerticalAlignment="Bottom" Margin="0,0,8,2" Cursor="Hand">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                            <TextBlock Text="Start Hidden (BatteryTray only)" Foreground="White" FontSize="20" VerticalAlignment="Bottom" />
+                        </StackPanel>
+
+                        <!-- Refresh Time -->
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Label Content="Refresh Time:" 
+                                   Foreground="White" FontSize="20" 
+                                   VerticalAlignment="Center" Padding="0"/>
+
+                            <TextBox x:Name="TxtRefreshTime" 
+                                     Width="60" Height="30" FontSize="18" 
+                                     Margin="15,0,5,0" 
+                                     VerticalContentAlignment="Center" 
+                                     HorizontalContentAlignment="Center" 
+                                     Background="#1E1E1E" Foreground="White" BorderBrush="#555555"/>
+
+                            <Label Content="s" 
+                                   Foreground="White" FontSize="20" 
+                                   VerticalAlignment="Center" Padding="0"/>
+                        </StackPanel>
+
+
+                        <!-- Transparent Background Checkbox -->
+                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                            <CheckBox x:Name="ChkTransparentBg" VerticalAlignment="Bottom" Margin="0,0,8,2" Click="ChkTransparentBg_Click" Cursor="Hand">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                            <TextBlock Text="Transparent Background" Foreground="White" FontSize="20" VerticalAlignment="Bottom" />
+                        </StackPanel>
+
+                        <!-- Background Color (Hex) -->
+                        <StackPanel x:Name="PanelBgColor" Orientation="Horizontal" Margin="0,15,0,0">
+                            <Label Content="Bg Color (Hex):" Foreground="White" FontSize="20" VerticalAlignment="Center" Padding="0"/>
+                            <TextBox x:Name="TxtBgColorHex" Width="90" Height="30" FontSize="18" Margin="16.7,0,5,0" 
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ToolTip="z.B. #000000" 
+                                Background="#1E1E1E" Foreground="White" BorderBrush="#555555"/>
+                            <!-- NEU: Der Paletten-Button -->
+                            <Button Content="🎨" Width="55" Height="30" FontSize="18" Margin="0,0,0,0"
+                                    Click="BtnPickBgColor_Click" ToolTip="Wähle eine Farbe aus" 
+                                    Style="{StaticResource MyGreenWhiteButton}" />
+                        </StackPanel>
+
+                        <!-- Text Color (Hex) -->
+                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                            <Label Content="Text Color (Hex):" Foreground="White" FontSize="20" VerticalAlignment="Center" Padding="0"/>
+                            <TextBox x:Name="TxtTextColorHex" Width="90" Height="30" FontSize="18" Margin="5,0,5,0" 
+                                VerticalContentAlignment="Center" HorizontalContentAlignment="Center" ToolTip="z.B. #FFFFFF" 
+                                Background="#1E1E1E" Foreground="White" BorderBrush="#555555"/>
+                            <!-- NEU: Der Paletten-Button -->
+                            <Button Content="🎨" Width="55" Height="30" FontSize="18" Margin="0,0,0,0"
+                                Click="BtnPickTextColor_Click" ToolTip="Wähle eine Farbe aus" 
+                                Style="{StaticResource MyGreenWhiteButton}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,15,0,0">
+                            <CheckBox x:Name="ChkDynamicTextColor" VerticalAlignment="Bottom" Margin="0,0,8,2" Cursor="Hand">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="1.3" ScaleY="1.3" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                            <TextBlock Text="Dynamic Text Color (RAG)" Foreground="White" FontSize="20" VerticalAlignment="Bottom" />
+                        </StackPanel>
+                    </StackPanel>
+                    
+                    
+
+
+                    <Label
+                        x:Name="BluetoothDevicesLabel" 
+                        Grid.Row="1"
+                        Grid.Column="3"
+                        Margin="5,5,5,5"
+                        FontSize="30"
+                        FontWeight="Medium"
+                        Foreground="Lime"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center">
+                        Bluetooth Devices
+                    </Label>
+
+                    <!-- ========================================== -->
+                    <!-- SPALTE 2: BLUETOOTH Devices               -->
+                    <!-- ========================================== -->
+                    <StackPanel Grid.Row="2" Grid.Column="3" Margin="5,20,5,5" Cursor="Hand">
+
+                        <ComboBox x:Name="CmbBt1" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt2" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt3" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt4" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt5" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt6" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt7" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt8" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt9" SelectionChanged="CmbBt_SelectionChanged"/>
+                        <ComboBox x:Name="CmbBt10" SelectionChanged="CmbBt_SelectionChanged"/>
+                    </StackPanel>
+
+
+
+                    <Label
+                        x:Name="DongleDevicesLabel" 
+                        Grid.Row="1"
+                        Grid.Column="5"
+                        Margin="5,5,5,5"
+                        FontSize="30"
+                        FontWeight="Medium"
+                        Foreground="Lime"
+                        HorizontalContentAlignment="Left"
+                        VerticalContentAlignment="Center">
+                        Dongle Devices
+                    </Label>
+
+                    <!-- ========================================== -->
+                    <!-- SPALTE 3: DONGLE Devices                  -->
+                    <!-- ========================================== -->
+                    <StackPanel Grid.Row="2" Grid.Column="5" Margin="5,20,5,5" Cursor="Hand">
+                        <ComboBox x:Name="CmbDongle1" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle2" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle3" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle4" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle5" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle6" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle7" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle8" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle9" SelectionChanged="CmbDongle_SelectionChanged"/>
+                        <ComboBox x:Name="CmbDongle10" SelectionChanged="CmbDongle_SelectionChanged"/>
+                    </StackPanel>
+
+                </Grid>
+
+
+
+                <Grid x:Name="OK_Cancel_Grid"
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      Margin="5,5,5,5">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.2*"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock 
+                       x:Name="Copyright"
+                       Text="Designed and Created&#x0a;by Georg Black"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Margin="5,5,10,5"
+                       FontFamily="MV Boli"
+                       FontSize="22"
+                       Foreground="Lime"
+                       TextWrapping="Wrap"
+                       LineHeight="10"
+                       FontWeight="Normal"
+                       TextAlignment="Center"
+                       VerticalAlignment="Center">
+                    </TextBlock>
+
+                    <Button
+                        x:Name="btnDefaults" 
+                        Style="{StaticResource ButtonStyleRed}"
+                        Click="btnDefaults_Click"
+                        FontSize="30"
+                        FontWeight="Medium"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="15,15,15,15"
+                        >Defaults
+                    </Button>
+
+                    <Button
+                        x:Name="btnApply" 
+                        Style="{StaticResource ButtonStyleRed}"
+                        Click="btnOK_Click"
+                        FontSize="36"
+                        FontWeight="Medium"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Margin="15,15,15,15"
+                        >OK
+                    </Button>
+
+                    <Button
+                        x:Name="btnCancel" 
+                        Style="{StaticResource ButtonStyleRed}"
+                        Click="btnCancel_Click"
+                        FontSize="36"
+                        FontWeight="Medium"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Margin="15,15,15,15"
+                        >Cancel
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+</Window>
